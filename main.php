@@ -44,15 +44,47 @@
 
       <div class="row text-center text-lg-left">
 <?php
-for ($i = 1; $i <= 16; $i++) {
+
+/*$sqlconf='my.cnf';
+$sql = new mysqli;
+$sql->init();
+$sql->options(MYSQLI_READ_DEFAULT_FILE, $sqlconf);
+$sql->real_connect();*/
+
+$sql = new mysqli('localhost', 'user', 'pass', 'novcom');
+
+if ($sql->connect_errno) {
+    printf("Не удалось подключиться: %s\n", $sql->connect_error);
+    exit();
+}
+if (isset($_GET["page"])) {
+	$start = ($_GET["page"]*8)-8;
+	$query = "SELECT * FROM blog_posts LIMIT ".$start.", 8";
+}
+else
+{
+	$query = "SELECT * FROM blog_posts LIMIT 8";
+}
+if ($result = $sql->query($query)) {
+	while ($row = $result->fetch_assoc()) {
     ?>
 		<div class="col-lg-3 col-md-4 col-xs-6">
           <a href="#" class="d-block mb-4 h-100">
             <img class="img-fluid img-thumbnail" src="http://placehold.it/320x240" alt="">
-          </a>
+		  <div class="caption">
+            <h3><?=$row["title"]?></h3>
+            <p><?=$row["post"]?></p>
+          </div>          
+		  </a>
+
         </div>
-	<?php
+	<?php		
+    }
+
+    /* удаление выборки */
+    $result->free();
 }
+
 ?>
     
       </div>
@@ -62,14 +94,22 @@ for ($i = 1; $i <= 16; $i++) {
 	
 	<nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center">
-    <li class="page-item disabled">
-      <a class="page-link" href="#" tabindex="-1">Previous</a>
-    </li>
-    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item  <? if($_GET['page']==1) {echo "disabled";} ?>">
+      <a class="page-link" href="?page=<?=$i-1;?>" tabindex="-1">Предыдущая</a>
+    </li>	
+	<?php		
+$query_pages = $sql->query("SELECT COUNT(*) FROM blog_posts");
+list($count) = $query_pages->fetch_row();
+$pages = round($count/8, 0, PHP_ROUND_HALF_UP);
+for ($i = 1; $i <= $pages; $i++) {
+?>
+<li class="page-item <? if($i==$_GET['page']) {echo "active";} ?>"><a class="page-link" href="?page=<?=$i?>"><?=$i?></a></li>
+<?php
+}
+$sql->close();
+?>
     <li class="page-item">
-      <a class="page-link" href="#">Next</a>
+      <a class="page-link" href="?page=<?=$i+1?>">Следующая</a>
     </li>
   </ul>
 </nav>
