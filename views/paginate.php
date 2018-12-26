@@ -1,19 +1,4 @@
 
-    <main role="main">
-
-    <!-- Page Content -->
-    <div class="container">
-
-      <h1 class="my-4 text-center text-lg-left"><?=$h1?></h1>
-
-      <div class="row text-center text-lg-left">
-404
-Страница не найдена
-    
-      </div>
-    </div>
-    <!-- /.container -->
-
 	<nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center">
     <li class="page-item  <? if($_GET['page']==1) {echo "disabled";} ?>">

@@ -18,26 +18,27 @@ else
 }
 
 $request = $_SERVER['REDIRECT_URL'];
-include 'head.php';
+include 'views/head.php';
+include 'views/nav.php';
 
 switch ($request) {
     case '/' :
-        include __DIR__ . '/main.php';
+        include __DIR__ . '/views/main.php';
         break;
     case '' :
-        include __DIR__ . '/main.php';
+        include __DIR__ . '/views/main.php';
         break;
     case '/about' :
 		$title = $h1 = "О нас";
-        include __DIR__ . '/about.php';
+        include __DIR__ . '/views/about.php';
 		
         break;
     default:
 		$title = $h1 = "404";
-		require __DIR__ . '/404.php';
+		require __DIR__ . '/views/404.php';
 		//header('HTTP/1.0 404 Not Found');
         break;
 }
 
-include 'footer.php';
-include 'nav.php';
+include 'views/paginate.php';
+include 'views/footer.php';
