@@ -2,7 +2,14 @@
 
 include 'app/connect.php';
 
-if (isset($_GET["page"])) {
+    $arr = require 'app/routes.php';
+    foreach ($arr as $key => $val) {
+        $this->add($key, $val);
+        var_dump($this);
+    }
+    
+
+/*if (isset($_GET["page"])) {
 	$start = ($_GET["page"]*8)-8;
 	$query = "SELECT * FROM posts LIMIT ".$start.", 8";
 	$title = $h1 = "Отзывы - Страница ".$_GET["page"];
@@ -39,10 +46,10 @@ switch ($request) {
 		require __DIR__ . '/views/404.php';
 		//header('HTTP/1.0 404 Not Found');
         break;
-}
-$query_pages = $sql->query("SELECT COUNT(*) FROM posts");
+}*/
+/*$query_pages = $sql->query("SELECT COUNT(*) FROM posts");
 $count = $query_pages->fetchColumn();
-$pages = round($count/8, 0, PHP_ROUND_HALF_UP);
+$pages = round($count/8, 0, PHP_ROUND_HALF_UP);*/
 
 include 'views/paginate.php';
 include 'views/footer.php';
